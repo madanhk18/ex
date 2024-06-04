@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<time.h>
+#include<conio.h>
+#include<stdlib.h>
+
+int a[100000], b[100000];
+void merge(int l ,int m ,int h)
+{
+
+    int i,j,k;
+    i=l;
+    j=m+1;
+    k=l;
+    while(i<=m && j<=h)
+    {
+        if(a[i]<a[j])
+        {
+
+            b[k]=a[i];
+            i++;
+        }
+        else
+        {
+            b[k]=a[j];
+            j++;
+        }
+        k++;
+    }
+    while(i<=m)
+    {
+        b[k]=a[i];
+        k++;
+        i++;
+    }
+    while(j<=h)
+    {
+        b[k]=a[j];
+        k++;
+        j++;
+    }
+    for(i=l;i<=h;i++)
+        a[i]=b[i];
+
+}
+void mergesort(int l ,int h)
+{
+
+    if(l<h)
+    {
+        int m=(l+h)/2;
+        mergesort(l,m);
+        mergesort(m+1,h);
+        merge(l,m,h);
+    }
+}
+main()
+{
+
+    int i,j,k,n;
+    clock_t b,e;
+    printf("\n Enter the number of elements ");
+    scanf("%d",&n);
+
+    for(i=0;i<n;i++)
+    {
+
+        a[i]=rand();
+        //a[i]=i;
+        //a[i]=n-1;
+    }
+    printf("An unsorted list is \n");
+    for(i=0;i<n;i++)
+    {
+
+        printf("%d \t",a[i]);
+    }
+    k=n/2;
+    b=clock();
+    mergesort(0,k-1);
+    mergesort(k,n-1);
+    merge(0,k-1,n-1);
+    e=clock();
+    printf("An sorted list is \n");
+    for(i=0;i<n;i++)
+    {
+
+        printf("%d \t",a[i]);
+    }
+    printf("\n Total time taken = %f \n",((double)(e-b))/CLOCKS_PER_SEC);
+
+}
